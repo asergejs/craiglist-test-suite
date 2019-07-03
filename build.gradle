@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.7.0"
+    }
+}
+
+plugins {
+    id 'groovy'
+    id "io.qameta.allure" version "2.7.0"
+}
+
+group 'uitest'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    compile 'com.google.inject:guice:3.0'
+    compile group: 'com.codeborne', name: 'selenide', version: '5.2.2'
+    compile group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '1.7.0'
+    compile group: 'io.qameta.allure', name: 'allure-cucumber4-jvm', version: '2.9.0'
+    compile group: 'io.cucumber', name: 'cucumber-jvm-groovy', version: '4.3.1', ext: 'pom'
+    compile group: 'io.cucumber', name: 'cucumber-junit', version: '4.3.1'
+    compile group: 'io.cucumber', name: 'cucumber-java', version: '4.3.1'
+    compile group: 'io.cucumber', name: 'cucumber-core', version: '4.3.1'
+    compile group: 'io.cucumber', name: 'cucumber-guice', version: '4.3.1'
+    compile group: 'io.cucumber', name: 'cucumber-groovy', version: '4.3.1'
+    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+}
+
+allure {
+    version = '2.7.0'
+    aspectjweaver = true
+    resultsDir = new File("${buildDir}/reports/allure-results")
+    reportDir = new File("${buildDir}/reports/allure-report")
+    useCucumberJVM {
+        version = '2.9.0'
+    }
+}
+
+task runTests(type: Test) {
+    include 'CukesRunner.class'
+}
+
+tasks.withType(Test) {
+    ignoreFailures = true
+    testLogging {
+        events = ["passed", "failed", "skipped"]
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+}
+

@@ -1,0 +1,9 @@
+.DS_Store
+.gradle
+/build
+.allure
+/allure-results
+
+# IDEA
+out/**
+/.idea
